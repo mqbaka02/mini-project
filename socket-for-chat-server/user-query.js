@@ -1,13 +1,14 @@
 const sqlite= require('node:sqlite');
 
 const db= new sqlite.DatabaseSync('database.sqlite');
+
 /**
  * Adds an user. Only the name needs to be specified since id is autoincremented.
  * @param {string} name 
  */
 function addUser(name) {
     const query= db.prepare("INSERT INTO users (name) VALUES ('" + name + "')");
-    query.all();
+    return query.run();
 };
 
 /**
@@ -45,7 +46,7 @@ function listUsers() {
  */
 function deleteUser(id) {
     const query= db.prepare('DELETE FROM users WHERE id=' + id);
-    query.all();
+    return query.run();
 };
 
 module.exports= {addUser, findUserByName, findUserById, listUsers, deleteUser};

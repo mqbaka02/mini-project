@@ -1,21 +1,65 @@
-const sqlite= require('node:sqlite');
-const { addUser, listUsers, findUserByName, deleteUser } = require('./user-query');
+const { addUser, listUsers, findUserByName, deleteUser, findUserById } = require('./user-query');
+const dotenv= require('dotenv');
+dotenv.config();
+const express= require('express');
 
-const db = new sqlite.DatabaseSync('database.sqlite');
+const app = express();
 
-// db.run('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)');
-// db.exec('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)');
+app.use(express.json());
 
-// const inserter= db.prepare(`INSERT INTO users (name) VALUES ('thirdtUser')`);
-// inserter.all();
+app.get('/hello', (request, response)=> {
+    console.log(request);
+    // response.send('Hello');
+    const resBody= {
+        // req: request,
+        message: "Hello"
+    };
+    response.json(resBody);
+    // response.send('Hello');
+});
 
-// addUser('mqbaka');
+app.get('/users', (req, res)=> {
+    res.json({
+        status: 'success',
+        data: listUsers()
+    });
+});
 
-// console.log(listUsers());
-// deleteUser(5);
+app.get('/user/:id', (req, res)=>{
+    const user= findUserById(req.params.id);
 
-console.log(findUserByName('mqbaka'));
-console.log(findUserByName('tom'));
-console.log(listUsers());
+    user.length=== 0 ? res.status(404).json({
+        status: 'not found',
+        data: {message: 'User not found'}
+    }) : res.json({
+        status: 'success',
+        data: {user: user[0]}
+    });
+});
 
-db.close();
+app.post('/user/create', (req, res)=> {
+    const userName= req.body.name;
+    if (!userName) {
+        res.status(400).json({
+            error: 'Name is required'
+        });
+    } else {
+        const result= addUser(userName);
+        res.json({
+            status: 'success',
+            data: {newUserId: result}
+        });
+    }
+});
+
+app.delete('/user/:id', (req, res)=> {
+    const result= deleteUser(req.params.id);
+    result.changes > 0
+        ? res.json({ status: 'success', message: 'User deleted successfully' })
+        : res.status(404).json({ status: "failed", error: 'User not found' });
+});
+
+const PORT= process.env.SERVER_PORT;
+app.listen(PORT, ()=> {
+    console.log("Server is running at http://localhost:", PORT);
+});

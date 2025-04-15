@@ -1,3 +1,4 @@
 /socket-for-chat/node_modules
 /socket-for-chat/.env.example
 /socket-for-chat-server/node_modules
+/socket-for-chat-server/.env
