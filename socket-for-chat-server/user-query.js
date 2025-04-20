@@ -1,34 +1,37 @@
 const sqlite= require('node:sqlite');
+const bcrypt= require('bcrypt');
 
 const db= new sqlite.DatabaseSync('database.sqlite');
 
 /**
- * Adds an user. Only the name needs to be specified since id is autoincremented.
+ * Adds an user. Only the name and the password need to be specified since id is autoincremented.
  * @param {string} name 
+ * @param {string} password
  */
-function addUser(name) {
-    const query= db.prepare("INSERT INTO users (name) VALUES ('" + name + "')");
-    return query.run();
+function addUser(name, password) {
+    const hashedPass= bcrypt.hashSync(password, 10);
+    const query= db.prepare("INSERT INTO users (name, password) VALUES (?, ?)");
+    return query.run(name, hashedPass);
 };
 
 /**
  * Searchs user by name.
  * @param {string} searchString
- * @returns {Array}
+ * @returns {Object|undefined}
  */
 function findUserByName(searchString) {
-    const query= db.prepare("SELECT * from users WHERE name= '" + searchString + "'");
-     return query.all();
+    const query= db.prepare("SELECT * from users WHERE name= ?");
+     return query.get(searchString);
 };
 
 /**
  * Searchs user by id.
  * @param {number} searchString
- * @returns {Array}
+ * @returns {Object|undefined}
  */
 function findUserById(searchString) {
-    const query= db.prepare("SELECT * from users WHERE id= '" + searchString + "'");
-     return query.all();
+    const query= db.prepare("SELECT * from users WHERE id= ?");
+     return query.get(searchString);
 };
 
 /**
