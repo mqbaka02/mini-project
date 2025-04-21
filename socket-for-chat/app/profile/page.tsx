@@ -1,13 +1,21 @@
 "use client";
 import { useEffect } from "react";
-import { isUserLoggedIn } from "../layout";
 import { useRouter } from "next/navigation";
+import { checkToken, isThereAnyToken } from "../services/utils";
 
 export default function Page() {
     const history= useRouter();
     useEffect(()=> {
-        if (!isUserLoggedIn()) {
+        if (!isThereAnyToken(localStorage)) {
             history.push('/login');
+        } else {
+            checkToken(localStorage.getItem('refreshToken')).then(answer => {
+                if (!answer) {
+                    localStorage.removeItem('accessToken');
+                    localStorage.removeItem('refreshToken');
+                    history.push('/');
+                }
+            });
         }
     }, []);
     return<>

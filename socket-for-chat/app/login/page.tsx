@@ -2,7 +2,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { BASE_API_URL } from "../register/page";
 import { useRouter } from "next/navigation";
-import { isUserLoggedIn } from "../layout";
+import { isThereAnyToken } from "../services/utils";
 
 export default function Page() {
 
@@ -59,7 +59,7 @@ export default function Page() {
                     console.log("Login successful");
                     localStorage.setItem("accessToken", data.data.accessToken);
                     localStorage.setItem("refreshToken", data.data.refreshToken);
-                    history.push('/');
+                    history.push('/profile');
                 }
             });
         } catch (error) {
@@ -68,7 +68,7 @@ export default function Page() {
     };
 
     useEffect(()=> {
-        if (isUserLoggedIn()) {
+        if (isThereAnyToken(localStorage)) {
             history.push('/');
         }
     }, []);

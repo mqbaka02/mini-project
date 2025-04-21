@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { isUserLoggedIn } from "../layout";
+import { isThereAnyToken } from "../services/utils";
 
 export const BASE_API_URL= process.env.NEXT_PUBLIC_BASE_API_URL;
 
@@ -73,7 +73,7 @@ export default function Page() {
     };
     
     useEffect(()=> {
-        if (isUserLoggedIn()) {
+        if (isThereAnyToken(localStorage)) {
             history.push('/');
         }
     }, []);

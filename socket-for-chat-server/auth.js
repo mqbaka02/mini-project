@@ -27,4 +27,15 @@ const login= (req, res) => {
     res.json({success: true, data:{ accessToken, refreshToken}});
 };
 
-module.exports= {login};
+const checkToken= (req, res) => {
+    const token= req.body.token;
+
+    jwt.verify(token, JWT_KEY, (err, user)=> {
+        if (err) {
+            return res.status(403).json({error: err, message: "This token is not valid."});
+        }
+        return res.json({success: true, message: "Token is valid alrgiht.", user: user});
+    });
+};
+
+module.exports= {login, checkToken};

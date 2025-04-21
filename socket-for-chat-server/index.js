@@ -3,7 +3,7 @@ const dotenv= require('dotenv');
 dotenv.config();
 const express= require('express');
 const jwt= require('jsonwebtoken');
-const { login } = require('./auth');
+const { login, checkToken } = require('./auth');
 const cors= require('cors');
 
 const app = express();
@@ -80,6 +80,7 @@ app.delete('/user/:id', (req, res)=> {
 });
 
 app.post('/login', login);
+app.post('/check-token', checkToken);
 
 const PORT= process.env.SERVER_PORT;
 app.listen(PORT, ()=> {
