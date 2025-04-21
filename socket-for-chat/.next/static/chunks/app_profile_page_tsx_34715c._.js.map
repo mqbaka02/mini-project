@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/ASUS/Documents/next-exercise-socket-chat-stuff/socket-for-chat/app/profile/page.tsx"],"sourcesContent":["\"use client\";\r\n\r\nimport { useEffect } from \"react\";\r\nimport { isUserLoggedIn } from \"../layout\";\r\nimport { useRouter } from \"next/navigation\";\r\n\r\nexport default function Page() {\r\n    const history= useRouter();\r\n    useEffect(()=> {\r\n        if (!isUserLoggedIn()) {\r\n            history.push('/login');\r\n        }\r\n    }, []);\r\n    return<>\r\n    <div className=\"flex items-center justify-center\">\r\n        Profile\r\n    </div>\r\n    </>\r\n};"],"names":[],"mappings":";;;;AAEA;AACA;AACA;;;AAJA;;;;AAMe,SAAS;;IACpB,MAAM,UAAS,CAAA,GAAA,oQAAA,CAAA,YAAS,AAAD;IACvB,CAAA,GAAA,4RAAA,CAAA,YAAS,AAAD;0BAAE;YACN,IAAI,CAAC,CAAA,GAAA,iHAAA,CAAA,iBAAc,AAAD,KAAK;gBACnB,QAAQ,IAAI,CAAC;YACjB;QACJ;yBAAG,EAAE;IACL,qBAAM;kBACN,cAAA,4TAAC;YAAI,WAAU;sBAAmC;;;;;;;AAItD;GAZwB;;QACL,oQAAA,CAAA,YAAS;;;KADJ"}},
+    {"offset": {"line": 52, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

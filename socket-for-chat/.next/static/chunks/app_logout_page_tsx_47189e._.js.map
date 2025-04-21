@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/ASUS/Documents/next-exercise-socket-chat-stuff/socket-for-chat/app/logout/page.tsx"],"sourcesContent":["\"use client\";\r\nimport { useRouter } from \"next/navigation\";\r\nimport { useEffect } from \"react\";\r\nimport { isUserLoggedIn } from \"../layout\";\r\n\r\nexport default function Page() {\r\n    const history= useRouter();\r\n    useEffect(()=>{\r\n        if(isUserLoggedIn()){\r\n            localStorage.removeItem('accessToken');\r\n            localStorage.removeItem('refreshToken');\r\n        }\r\n        history.push('/');\r\n    }, []);\r\n    return<></>;\r\n};"],"names":[],"mappings":";;;;AACA;AACA;AACA;;;AAHA;;;;AAKe,SAAS;;IACpB,MAAM,UAAS,CAAA,GAAA,oQAAA,CAAA,YAAS,AAAD;IACvB,CAAA,GAAA,4RAAA,CAAA,YAAS,AAAD;0BAAE;YACN,IAAG,CAAA,GAAA,iHAAA,CAAA,iBAAc,AAAD,KAAI;gBAChB,aAAa,UAAU,CAAC;gBACxB,aAAa,UAAU,CAAC;YAC5B;YACA,QAAQ,IAAI,CAAC;QACjB;yBAAG,EAAE;IACL,qBAAM;AACV;GAVwB;;QACL,oQAAA,CAAA,YAAS;;;KADJ"}},
+    {"offset": {"line": 45, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}
