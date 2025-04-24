@@ -21,12 +21,19 @@ const login= (req, res) => {
         return res.status(401).json({error: "Invalid credentials", message: "User name or password is incorrect"});
     }
     
-    const accessToken= jwt.sign({id: user.id, username: user.name}, JWT_KEY, {expiresIn: '1h'});
-    const refreshToken= jwt.sign({id: user.id}, JWT_KEY, {expiresIn: '7d'});
+    const accessToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
+    const refreshToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
+    // console.log(user);
 
-    res.json({success: true, data:{ accessToken, refreshToken}});
+    res.json({success: true, data:{ refreshToken: refreshToken, accessToken: accessToken, id: user.id}});
 };
 
+/**
+ * Checks the validity of a token.
+ * @param {any} req 
+ * @param {any} res 
+ * @returns {any}
+ */
 const checkToken= (req, res) => {
     const token= req.body.token;
 
@@ -38,4 +45,4 @@ const checkToken= (req, res) => {
     });
 };
 
-module.exports= {login, checkToken};
+module.exports= {login, checkToken, JWT_KEY};

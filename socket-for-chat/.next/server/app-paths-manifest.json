@@ -2,5 +2,8 @@
   "/page": "app/page.js",
   "/login/page": "app/login/page.js",
   "/profile/page": "app/profile/page.js",
-  "/logout/page": "app/logout/page.js"
+  "/logout/page": "app/logout/page.js",
+  "/register/page": "app/register/page.js",
+  "/success/page": "app/success/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }
