@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { checkToken, isThereAnyToken } from "../services/utils";
 import { BASE_API_URL } from "../register/page";
+import { clearLocatDatas } from "../logout/page";
 
 export default function Page() {
     const history= useRouter();
@@ -11,20 +12,27 @@ export default function Page() {
 
     const [isEditing, setIsEditing]= useState<boolean>(false);
 
+    const [profileLoading, setProfileLoading]= useState(true);
+
     useEffect(()=> {
         if (!isThereAnyToken(localStorage)) {
             history.push('/login');
         } else {
             checkToken(localStorage.getItem('refreshToken')).then(answer => {
                 if (!answer) {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
+                    clearLocatDatas();
                     history.push('/');
                 }
             });
         }
 
-        const id= JSON.parse(localStorage.getItem('data') || "{}")?.id
+        const id= JSON.parse(localStorage.getItem('data') || "{}")?.id;
+
+        /**
+         * This will fetch the profile info from the backend using the two tokens.
+         * If the accessToken is expired, it requests for a new one using the refreshToken
+         * and redo the fetching again.
+         */
         const getProfileInfo = () => {
             fetch(BASE_API_URL + '/profile-info', {
                 method: 'POST',
@@ -37,6 +45,7 @@ export default function Page() {
                     console.log(data);
                     if (data.data) {
                         setProfileData(data.data);
+                        setProfileLoading(false);
                     } else if (data.error === "accessToken") {
                         fetch(BASE_API_URL + '/refresh', {
                             method: 'POST',
@@ -52,9 +61,16 @@ export default function Page() {
                                 getProfileInfo();
                             }
                         });
+                    } else {
+                        console.log("RefreshToken is not valid");
+                        history.push('/');
                     }
                 }
-            );
+            ).catch(error => {
+                console.log("Can't fetch shit. Aborting.");
+                console.log(error);
+                history.push('/');
+            });
         }
         getProfileInfo();
     }, [isEditing]);
@@ -114,6 +130,9 @@ export default function Page() {
     <div className="flex flex-col gap-4 items-center justify-center">
         <h1 className="text-xl text-center">Your profile</h1>
         {
+            profileLoading ?
+            <>Loaging you profile info...</>
+            :
             !isEditing ?
             <>
                 <div className="grid grid-cols-2 gap-y-2 gap-x-6">

@@ -20,7 +20,7 @@ var _s = __turbopack_refresh__.signature();
 ;
 ;
 ;
-const BASE_API_URL = ("TURBOPACK compile-time value", "http://192.168.88.182:8000");
+const BASE_API_URL = ("TURBOPACK compile-time value", "http://192.168.88.161:8000");
 function Page() {
     _s();
     const [inputState, setInputState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
@@ -115,7 +115,7 @@ function Page() {
                     children: "Create your account"
                 }, void 0, false, {
                     fileName: "[project]/app/register/page.tsx",
-                    lineNumber: 83,
+                    lineNumber: 84,
                     columnNumber: 13
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -131,7 +131,7 @@ function Page() {
                             placeholder: "Your user name"
                         }, void 0, false, {
                             fileName: "[project]/app/register/page.tsx",
-                            lineNumber: 85,
+                            lineNumber: 86,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -143,7 +143,7 @@ function Page() {
                             placeholder: "Your password"
                         }, void 0, false, {
                             fileName: "[project]/app/register/page.tsx",
-                            lineNumber: 86,
+                            lineNumber: 87,
                             columnNumber: 17
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -155,7 +155,7 @@ function Page() {
                             placeholder: "Confirm your password"
                         }, void 0, false, {
                             fileName: "[project]/app/register/page.tsx",
-                            lineNumber: 87,
+                            lineNumber: 88,
                             columnNumber: 17
                         }, this),
                         error.hasErrors && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -163,7 +163,7 @@ function Page() {
                             children: error.message
                         }, void 0, false, {
                             fileName: "[project]/app/register/page.tsx",
-                            lineNumber: 88,
+                            lineNumber: 89,
                             columnNumber: 37
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$1$2e$6_react$2d$dom$40$19$2e$0$2e$0_react$40$19$2e$0$2e$0_$5f$react$40$19$2e$0$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -172,19 +172,19 @@ function Page() {
                             value: "Create an account"
                         }, void 0, false, {
                             fileName: "[project]/app/register/page.tsx",
-                            lineNumber: 89,
+                            lineNumber: 90,
                             columnNumber: 17
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/register/page.tsx",
-                    lineNumber: 84,
+                    lineNumber: 85,
                     columnNumber: 13
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/register/page.tsx",
-            lineNumber: 82,
+            lineNumber: 83,
             columnNumber: 9
         }, this)
     }, void 0, false);
@@ -239,22 +239,28 @@ const checkToken = async (token)=>{
     if (token === null) {
         return false;
     }
-    const response = await fetch(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$register$2f$page$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BASE_API_URL"] + '/check-token', {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            token: token
-        })
-    });
-    const data = await response.json();
-    console.log(data);
-    if (data.success === true) {
-        return true;
-    } else {
-        return false;
+    try {
+        const response = await fetch(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$register$2f$page$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["BASE_API_URL"] + '/check-token', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                token: token
+            })
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data.success === true) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log("Can't fetch shit. Aborting...");
+        console.log(error);
     }
+    ;
 };
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_refresh__.registerExports(module, globalThis.$RefreshHelpers$);

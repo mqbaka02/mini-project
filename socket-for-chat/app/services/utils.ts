@@ -47,16 +47,21 @@ export const checkToken= async (token: string|null) => {
     if(token=== null) {
         return false;
     }
-    const response= await fetch(BASE_API_URL + '/check-token', {
-        method: 'POST',
-        headers: {'Content-type': 'application/json'},
-        body: JSON.stringify({token: token})
-    });
-    const data= await response.json();
-    console.log(data);
-    if(data.success=== true) {
-        return true;
-    } else {
-        return false;
-    }
+    try{
+        const response= await fetch(BASE_API_URL + '/check-token', {
+            method: 'POST',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({token: token})
+        });
+        const data= await response.json();
+        console.log(data);
+        if(data.success=== true) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error){
+        console.log("Can't fetch shit. Aborting...");
+        console.log(error);
+    };
 };

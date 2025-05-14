@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { isThereAnyToken } from "../services/utils";
 
 export const BASE_API_URL= process.env.NEXT_PUBLIC_BASE_API_URL;
+// export const BASE_API_URL= "http://192.168.88.162:8000";
 
 export default function Page() {
 

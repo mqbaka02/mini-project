@@ -156,6 +156,6 @@ const PORT= process.env.SERVER_PORT;
 app.listen(PORT, ()=> {
     console.log(
         "Server is running at http://localhost:" + PORT,
-        " (local)\n                     http://192.168.88.182:" + PORT, " (network)"
+        " (local)\n                     http://192.168.88.161:" + PORT, " (network)"
     );
 });
