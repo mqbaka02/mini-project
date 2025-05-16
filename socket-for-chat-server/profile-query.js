@@ -12,7 +12,12 @@ const db= new sqlite.DatabaseSync('database.sqlite');
  */
 function addNewProfile (id, name= null, firstname= null, age= null){
     const query= db.prepare("INSERT INTO profiles (userID, name, firstname, age) VALUES (?, ?, ?, ?)");
-    return query.run(id, name, firstname, age);
+    try{
+        return query.run(id, name, firstname, age);
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
 }
 
 /**

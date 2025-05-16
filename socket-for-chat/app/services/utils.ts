@@ -54,7 +54,7 @@ export const checkToken= async (token: string|null) => {
             body: JSON.stringify({token: token})
         });
         const data= await response.json();
-        console.log(data);
+        // console.log(data);
         if(data.success=== true) {
             return true;
         } else {

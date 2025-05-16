@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 app.get('/', (request, response)=> {
-    console.log(request);
+    // console.log(request);
     const resBody= {
         message: "Hello"
     };
@@ -23,7 +23,7 @@ app.get('/', (request, response)=> {
 });
 
 app.get('/hello', (request, response)=> {
-    console.log(request);
+    // console.log(request);
     // response.send('Hello');
     const resBody= {
         // req: request,
@@ -52,8 +52,21 @@ app.get('/user/:id', (req, res)=>{
     });
 });
 
+app.post('/user/newprofile', (req, res)=> {
+    const {name, firstname, age, id}= req.body;
+    try{
+        res.json({
+            result: addNewProfile(id, name, firstname, age)
+        }); 
+    } catch (error) {
+        res.json({
+            error: error
+        });
+    }
+});
+
 app.post('/user/create', (req, res)=> {
-    console.log(req);
+    // console.log(req);
     const userName= req.body.username;
     const pass= req.body.password;
     if (!userName || !pass) {

@@ -1,5 +1,6 @@
 const sqlite= require('node:sqlite');
 const bcrypt= require('bcrypt');
+const { addNewProfile } = require('./profile-query');
 
 const db= new sqlite.DatabaseSync('database.sqlite');
 
@@ -11,7 +12,13 @@ const db= new sqlite.DatabaseSync('database.sqlite');
 function addUser(name, password) {
     const hashedPass= bcrypt.hashSync(password, 10);
     const query= db.prepare("INSERT INTO users (name, password) VALUES (?, ?)");
-    return query.run(name, hashedPass);
+    const data= query.run(name, hashedPass);
+    try{
+        addNewProfile(data.lastInsertRowid);
+    } catch (error) {
+        return {...data, ["profileError"]: error};
+    }
+    return data;
 };
 
 /**

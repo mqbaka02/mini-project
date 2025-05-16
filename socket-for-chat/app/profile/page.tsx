@@ -62,8 +62,9 @@ export default function Page() {
                             }
                         });
                     } else {
-                        console.log("RefreshToken is not valid");
-                        history.push('/');
+                        // console.log("RefreshToken is not valid");
+                        // console.log(data);
+                        // history.push('/');
                     }
                 }
             ).catch(error => {

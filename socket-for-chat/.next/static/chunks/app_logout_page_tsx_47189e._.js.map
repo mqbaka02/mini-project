@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/ASUS/Documents/next-exercise-socket-chat-stuff/socket-for-chat/app/logout/page.tsx"],"sourcesContent":["\"use client\";\r\nimport { useRouter } from \"next/navigation\";\r\nimport { useEffect } from \"react\";\r\n\r\nexport default function Page() {\r\n    const history= useRouter();\r\n    useEffect(()=>{\r\n        clearLocatDatas();\r\n        history.push('/');\r\n    }, []);\r\n    return<></>;\r\n};\r\n\r\n/**\r\n * Deletes all user data related to the site from localStorage.\r\n */\r\nexport const clearLocatDatas= () => {\r\n    localStorage.removeItem('accessToken');\r\n    localStorage.removeItem('refreshToken');\r\n    localStorage.removeItem('data');\r\n};"],"names":[],"mappings":";;;;;AACA;AACA;;;AAFA;;;AAIe,SAAS;;IACpB,MAAM,UAAS,CAAA,GAAA,oQAAA,CAAA,YAAS,AAAD;IACvB,CAAA,GAAA,4RAAA,CAAA,YAAS,AAAD;0BAAE;YACN;YACA,QAAQ,IAAI,CAAC;QACjB;yBAAG,EAAE;IACL,qBAAM;AACV;GAPwB;;QACL,oQAAA,CAAA,YAAS;;;KADJ;AAYjB,MAAM,kBAAiB;IAC1B,aAAa,UAAU,CAAC;IACxB,aAAa,UAAU,CAAC;IACxB,aAAa,UAAU,CAAC;AAC5B"}},
-    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}
