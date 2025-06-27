@@ -1,4 +1,4 @@
-const { findUserByName } = require("./user-query");
+const { findUserByName, getUserRole } = require("./user-query");
 const bcrypt= require('bcrypt');
 const jwt= require('jsonwebtoken');
 
@@ -20,12 +20,24 @@ const login= (req, res) => {
     if(!user || ! bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({error: "Invalid credentials", message: "User name or password is incorrect"});
     }
+
+    let adminToken;
+    // console.log(getUserRole(user.id)[0].role);
+    const isAdmin= (getUserRole(user.id)[0]?.role=== 'admin');
     
     const accessToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
+    if (isAdmin){
+        adminToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
+    }
     const refreshToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
     // console.log(user);
 
-    res.json({success: true, data:{ refreshToken: refreshToken, accessToken: accessToken, id: user.id}});
+    res.json({success: true, data:{
+        refreshToken: refreshToken,
+        accessToken: accessToken,
+        id: user.id,
+        ...(isAdmin && {adminToken: adminToken})
+    }});
 };
 
 /**

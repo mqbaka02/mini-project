@@ -59,6 +59,9 @@ export default function Page() {
                     console.log("Login successful");
                     localStorage.setItem("accessToken", data.data.accessToken);
                     localStorage.setItem("refreshToken", data.data.refreshToken);
+                    if(data.data.adminToken){
+                        localStorage.setItem("adminToken", data.data.adminToken);
+                    }
                     localStorage.setItem("data", JSON.stringify(data.data));
                     history.push('/profile');
                 }

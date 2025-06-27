@@ -51,7 +51,7 @@ function listUsers() {
 };
 
 /**
- * Deetes the user that corresponds to the given id.
+ * Deletes the user that corresponds to the given id.
  * @param {string} number
  */
 function deleteUser(id) {
@@ -59,4 +59,14 @@ function deleteUser(id) {
     return query.run();
 };
 
-module.exports= {addUser, findUserByName, findUserById, listUsers, deleteUser};
+/**
+ * Gets the role of an user based on the id.
+ * @param {number} id 
+ * @returns {string}
+ */
+function getUserRole(id){
+    const query= db.prepare('SELECT role FROM users WHERE id=' + id);
+    return query.all();
+}
+
+module.exports= {addUser, findUserByName, findUserById, listUsers, deleteUser, getUserRole};
