@@ -28,6 +28,7 @@ const login= (req, res) => {
     const accessToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
     if (isAdmin){
         adminToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
+        res.setHeader("Set-Cookie", `adminToken=${adminToken}; Path=/; HttpOnly; Secure; SameSite=None`);
     }
     const refreshToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
     // console.log(user);

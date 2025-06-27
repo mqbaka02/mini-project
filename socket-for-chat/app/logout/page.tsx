@@ -17,5 +17,6 @@ export default function Page() {
 export const clearLocatDatas= () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('adminToken');
     localStorage.removeItem('data');
 };

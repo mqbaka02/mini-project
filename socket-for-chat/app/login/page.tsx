@@ -42,6 +42,7 @@ export default function Page() {
             fetch( BASE_API_URL + '/login', {
                 method: 'POST',
                 headers: {'Content-type': 'application/json'},
+                credentials: 'include',
                 body: JSON.stringify(responseBody)
             }).then(response=> {
                 console.log(response);

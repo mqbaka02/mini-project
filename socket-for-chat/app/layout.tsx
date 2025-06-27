@@ -41,7 +41,10 @@ const HeaderBase= ({hasUser}: {hasUser: boolean})=> {
                     {hasUser ?
                         <>
                             <Link href={"/profile"} className='hover:text-[#55f]'>Profile</Link>
-                            <Link href={"/admin"} className='hover:text-[#55f]'>Admin</Link>
+                            {
+                                localStorage.getItem('adminToken') &&
+                                <Link href={"/admin"} className='hover:text-[#55f]'>Admin</Link>
+                            }
                             <Link href={"/logout"} className='hover:text-[#55f]'>Log out</Link>
                         </>
                         :

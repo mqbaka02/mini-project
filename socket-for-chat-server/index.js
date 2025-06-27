@@ -6,13 +6,22 @@ const jwt= require('jsonwebtoken');
 const { login, checkToken, JWT_KEY } = require('./auth');
 const cors= require('cors');
 const { addNewProfile, getAllProfiles, getProfile, updateProfile } = require('./profile-query');
+const https= require('https');
+const fs= require('fs');
+const path= require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors({
     origin: ["http://localhost:3000", "http://192.168.88.182:3000"],
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
+
+const httpsOptions = {
+    key: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+3-key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+3.pem')),
+}
 
 app.get('/', (request, response)=> {
     // console.log(request);
@@ -178,9 +187,16 @@ app.post('/update-info', authenticateToken, (req, res)=> {
 // updateProfile(1, "Henintsoa", null, null);
 
 const PORT= process.env.SERVER_PORT;
-app.listen(PORT, ()=> {
+// app.listen(PORT, ()=> {
+//     console.log(
+//         "Server is running at http://localhost:" + PORT,
+//         " (local)\n                     http://192.168.88.161:" + PORT, " (network)"
+//     );
+// });
+
+https.createServer(httpsOptions, app).listen(PORT, '0.0.0.0', () => {
     console.log(
-        "Server is running at http://localhost:" + PORT,
-        " (local)\n                     http://192.168.88.161:" + PORT, " (network)"
+        "🚀 HTTPS server running at https://localhost:" + PORT,
+        "\n   or https://127.0.0.1:" + PORT
     );
 });
