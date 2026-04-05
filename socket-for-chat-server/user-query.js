@@ -16,6 +16,7 @@ function addUser(name, password) {
     try{
         addNewProfile(data.lastInsertRowid);
     } catch (error) {
+        console.error("Cannot create new profile");
         return {...data, ["profileError"]: error};
     }
     return data;

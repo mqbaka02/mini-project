@@ -3,7 +3,7 @@ const dotenv= require('dotenv');
 dotenv.config();
 const express= require('express');
 const jwt= require('jsonwebtoken');
-const { login, checkToken, JWT_KEY } = require('./auth');
+const { login, checkToken, JWT_KEY, logout } = require('./auth');
 const cors= require('cors');
 const { addNewProfile, getAllProfiles, getProfile, updateProfile } = require('./profile-query');
 const https= require('https');
@@ -45,19 +45,29 @@ app.get('/hello', (request, response)=> {
 app.get('/users', (req, res)=> {
     res.json({
         status: 'success',
-        data: listUsers()
+        data: listUsers().map(u=> ({
+            id: u.id,
+            name: u.name,
+            role: u.role,
+        }))
     });
 });
 
 app.get('/user/:id', (req, res)=>{
     const user= findUserById(req.params.id);
 
-    user.length=== 0 ? res.status(404).json({
+    console.log(user);
+
+    !user ? res.status(404).json({
         status: 'not found',
         data: {message: 'User not found'}
     }) : res.json({
         status: 'success',
-        data: {user: user[0]}
+        data: {user: {
+            id: user.id,
+            name: user.name,
+            role: user.role,
+        }}
     });
 });
 
@@ -104,6 +114,7 @@ app.delete('/user/:id', (req, res)=> {
 
 app.post('/login', login);
 app.post('/check-token', checkToken);
+app.get('/logout', logout);
 
 /**
  * Middleware for token authentication for protected API routes.

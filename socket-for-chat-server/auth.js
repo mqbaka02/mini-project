@@ -26,12 +26,14 @@ const login= (req, res) => {
     const isAdmin= (getUserRole(user.id)[0]?.role=== 'admin');
     
     const accessToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
+    const refreshToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
+
     if (isAdmin){
         adminToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '1h'});
-        res.setHeader("Set-Cookie", `adminToken=${adminToken}; Path=/; HttpOnly; Secure; SameSite=None`);
+        res.setHeader("Set-Cookie", [`accessToken=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None`, `refreshToken=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=None`, `adminToken=${adminToken}; Path=/; HttpOnly; Secure; SameSite=None`]);
+    } else {
+        res.setHeader("Set-Cookie", [`accessToken=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None`, `refreshToken=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=None`]);
     }
-    const refreshToken= jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
-    // console.log(user);
 
     res.json({success: true, data:{
         refreshToken: refreshToken,
@@ -58,4 +60,9 @@ const checkToken= (req, res) => {
     });
 };
 
-module.exports= {login, checkToken, JWT_KEY};
+const logout= (req, res)=> {
+    res.setHeader("Set-Cookie", [`accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None`, `refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None`, `adminToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None`]);
+    res.status(200).json({message: "Logged out succesfully!"});
+};
+
+module.exports= {login, checkToken, JWT_KEY, logout};

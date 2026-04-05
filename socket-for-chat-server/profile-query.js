@@ -27,7 +27,9 @@ function addNewProfile (id, name= null, firstname= null, age= null){
  */
 function getProfile(id) {
     const query= db.prepare("SELECT * FROM profiles WHERE userid= ?");
-    return query.get(id);
+    const answer= query.get(id);
+    console.log(answer);
+    return answer;
 }
 
 /**
