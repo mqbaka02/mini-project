@@ -1,6 +1,6 @@
 const sqlite= require('node:sqlite');
 const bcrypt= require('bcrypt');
-const { addNewProfile } = require('./profile-query');
+const { addNewProfile } = require('../accounts/profile-query');
 
 const db= new sqlite.DatabaseSync('database.sqlite');
 

@@ -1,4 +1,4 @@
-const { findUserByName, getUserRole } = require("./user-query");
+const { findUserByName, getUserRole } = require("../admin/user-query");
 const bcrypt= require('bcrypt');
 const jwt= require('jsonwebtoken');
 
@@ -65,4 +65,37 @@ const logout= (req, res)=> {
     res.status(200).json({message: "Logged out succesfully!"});
 };
 
-module.exports= {login, checkToken, JWT_KEY, logout};
+
+/**
+ * Middleware for token authentication for protected API routes.
+ * @param {any} req 
+ * @param {any} res 
+ * @param {any} next 
+ * @returns {any}
+ */
+const authenticateToken= (req, res, next) => {
+    if (req.headers['authorization']) {
+        const accessToken= req.headers['authorization'].split(' ')[1];
+        const refreshToken= req.headers['authorization'].split(' ')[2];
+        if (!refreshToken) {
+            return res.status(401).json({error: 'Access denied, one or more token is missing.'});
+        }
+        // next();
+
+        jwt.verify(refreshToken, JWT_KEY, (err, user)=> {
+            if (err) {
+                return res.status(401).json({error: "refreshToken", message: "Refresh token is not valid."});
+            }
+            req.user= user;
+            jwt.verify(accessToken, JWT_KEY, (err, user)=> {
+                if(err ) {
+                    return res.status(401).json({error: "accessToken", message: "Access token is expired"});
+                }
+                next();
+            });
+        });
+    }
+    // next();
+};
+
+module.exports= {login, checkToken, JWT_KEY, logout, authenticateToken};
