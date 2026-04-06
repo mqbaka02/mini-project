@@ -63,7 +63,7 @@ const Footer = () => {
     return <div className="w-full bg-[#333] py-2">
         <div className="text-white w-[97%] max-w-[63rem] mx-auto flex justify-between">
             <Link className="text-3 font-semibold" href={"/"}>Basic Logo</Link>
-            <span>©{new Date().getFullYear()}</span>
+            <span>© {new Date().getFullYear()}</span>
         </div>
     </div>
 };
