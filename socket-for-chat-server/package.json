@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "mkcert": "^3.2.0",
     "nodemon": "^3.1.9",
+    "socket.io": "^4.8.3",
     "sqlite": "^5.1.1"
   }
 }

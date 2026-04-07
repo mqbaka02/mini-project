@@ -1,12 +1,14 @@
 const dotenv= require('dotenv');
 dotenv.config();
 const express= require('express');
-const jwt= require('jsonwebtoken');
 const cors= require('cors');
 const https= require('https');
 const fs= require('fs');
 const path= require('path');
 const { routes } = require('./certs/router/routes.js');
+const { Server } = require('socket.io');
+const jwt= require('jsonwebtoken');
+const { JWT_KEY } = require('./accounts/auth.js');
 
 const app = express();
 app.use(express.json());
@@ -69,7 +71,54 @@ const PORT= process.env.SERVER_PORT;
 //     );
 // });
 
-https.createServer(httpsOptions, app).listen(PORT, '0.0.0.0', () => {
+const server= https.createServer(httpsOptions, app);
+
+const io= new Server(server, {
+    cors: {
+        origin: ["http://localhost:3000", "http://192.168.88.182:3000"],
+        methods: ['GET', 'POST'],
+        // credentials: true
+    }
+});
+
+const connectedUsers= [];
+io.use((socket, next)=> {
+    const accessToken= socket.handshake.auth.accessToken;
+    let foundUser;
+    jwt.verify(accessToken, JWT_KEY, (err, user)=> {
+        if (err) {
+            console.error("Token is not valid");
+            return;
+        }
+        // console.log("user: ", user, "err: ", err);
+        foundUser= user;
+        return user;
+    });
+    // console.log("FOUND: ", foundUser);
+    if (!foundUser) {
+        console.error("NO user found!");
+        return next(new Error("No user found"));
+    }
+    // console.log("TOKEN IS VALID BRO", foundUser);
+    if (connectedUsers.find(user=> user.id=== foundUser.id))
+    connectedUsers.push({
+        id: foundUser.id,
+        name: foundUser.username,
+    });
+    next();
+});
+
+
+io.on('connection', (socket)=> {
+    // console.log(connectedUsers);
+    // console.log("USER " + socket.id + " CONNECTED===============");
+    // console.log("USER " + socket.handshake.auth.token + " CONNECTED===============");
+    const creadentials= socket.handshake.auth;
+    console.log("CONNECT=====>");
+    console.log(creadentials);
+});
+
+server.listen(PORT, '0.0.0.0', () => {
     console.log(
         "🚀 HTTPS server running at https://localhost:" + PORT,
         "\n   or https://127.0.0.1:" + PORT
