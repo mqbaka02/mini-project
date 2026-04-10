@@ -5,10 +5,10 @@ const cors= require('cors');
 const https= require('https');
 const fs= require('fs');
 const path= require('path');
-const { routes } = require('./certs/router/routes.js');
 const { Server } = require('socket.io');
 const jwt= require('jsonwebtoken');
 const { JWT_KEY } = require('./accounts/auth.js');
+const { routes } = require('./router/routes.js');
 
 const app = express();
 app.use(express.json());
@@ -19,8 +19,8 @@ app.use(cors({
 }));
 
 const httpsOptions = {
-    key: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+3-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+3.pem')),
+    key: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+2-key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'certs', 'localhost+2.pem')),
 }
 
 app.get('/', (request, response)=> {
