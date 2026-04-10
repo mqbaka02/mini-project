@@ -81,7 +81,7 @@ const io= new Server(server, {
     }
 });
 
-const connectedUsers= [];
+let connectedUsers= [];
 io.use((socket, next)=> {
     const accessToken= socket.handshake.auth.accessToken;
     let foundUser;
@@ -100,11 +100,12 @@ io.use((socket, next)=> {
         return next(new Error("No user found"));
     }
     // console.log("TOKEN IS VALID BRO", foundUser);
-    if (connectedUsers.find(user=> user.id=== foundUser.id))
+    if (!connectedUsers.find(user=> user.id=== foundUser.id))
     connectedUsers.push({
         id: foundUser.id,
         name: foundUser.username,
     });
+    io.emit('server_message', {connectedUsers});
     next();
 });
 
@@ -113,9 +114,17 @@ io.on('connection', (socket)=> {
     // console.log(connectedUsers);
     // console.log("USER " + socket.id + " CONNECTED===============");
     // console.log("USER " + socket.handshake.auth.token + " CONNECTED===============");
-    const creadentials= socket.handshake.auth;
-    console.log("CONNECT=====>");
-    console.log(creadentials);
+    const credentials= socket.handshake.auth;
+    // console.log("CONNECT=====>");
+    // console.log(credentials);
+    // console.log(connectedUsers);
+    io.emit('server_message', {connectedUsers});
+    socket.on("disconnect", (reason) => {
+        console.log("REASON, ", reason);
+        console.log("Disconnected, ", credentials.id);
+        connectedUsers= connectedUsers.filter(user=> user.id!== credentials.id);//Remove the disconnected user
+        io.emit('server_message', {connectedUsers});
+    });
 });
 
 server.listen(PORT, '0.0.0.0', () => {

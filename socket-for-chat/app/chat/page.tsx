@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import { getUsersList, userListItem } from "../lib/users";
 import { socket } from "../socket/socket";
-
+type user= {id: number, name: string};
 export default function Page() {
     const [users, setUsers]= useState<userListItem[]>([]);
     const [connected, setConnected]= useState<boolean>(false);
+    const [connectedUsers, setConnectedUsers] = useState<user[]>([]);
 
     useEffect(()=> {
         getUsersList().then(response=> {
@@ -16,13 +17,20 @@ export default function Page() {
 
         const onConnect= ()=> setConnected(true);
         const onDisconnect= ()=> setConnected(false);
+        const onConnectedUsers= (p: {connectedUsers: user[]})=> {
+            console.log(p);
+            setConnectedUsers(p.connectedUsers as user[]);
+        }
 
         socket.on("connect", onConnect);
         socket.on("disconnect", onDisconnect);
+
+        socket.on("server_message", onConnectedUsers);
         
         return ()=> {
             socket.off("connect", onConnect);
             socket.off("disconnect", onDisconnect);
+            socket.off("server_message", onConnectedUsers);
         };
 
     }, []);
@@ -41,7 +49,7 @@ export default function Page() {
             <tbody>
                 {
                     users.map(user=>
-                        <tr key={user.id}>
+                        <tr key={user.id} className={connectedUsers.some(el=> el.id=== user.id)? "text-green-500": ""}>
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                         </tr>
