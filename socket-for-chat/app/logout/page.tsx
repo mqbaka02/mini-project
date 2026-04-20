@@ -2,11 +2,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { BASE_API_URL } from "../register/page";
+import Cookies from "js-cookie";
 
 export default function Page() {
     const history= useRouter();
     useEffect(()=>{
-        clearLocatDatas();
+        clearLocaltDatas();
         try {
             fetch(BASE_API_URL + '/logout', {
                 method: 'GET',
@@ -27,9 +28,12 @@ export default function Page() {
 /**
  * Deletes all user data related to the site from localStorage.
  */
-export const clearLocatDatas= () => {
+export const clearLocaltDatas= () => {
     localStorage.removeItem('accessToken');
+    Cookies.remove("accessToken")
     localStorage.removeItem('refreshToken');
+    Cookies.remove("refreshToken")
     localStorage.removeItem('adminToken');
+    Cookies.remove("adminToken");
     localStorage.removeItem('data');
 };

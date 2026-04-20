@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { checkToken, isThereAnyToken } from "../services/utils";
 import { BASE_API_URL } from "../register/page";
-import { clearLocatDatas } from "../logout/page";
+import { clearLocaltDatas } from "../logout/page";
+import { getProfileInfo, updateProfileInfo } from "../lib/profile";
+import { useNotificationContext } from "../contexts/contexts";
 
 export default function Page() {
     const history= useRouter();
@@ -14,13 +16,15 @@ export default function Page() {
 
     const [profileLoading, setProfileLoading]= useState(true);
 
+    const notifCtx= useNotificationContext();
+
     useEffect(()=> {
         if (!isThereAnyToken(localStorage)) {
             history.push('/login');
         } else {
             checkToken(localStorage.getItem('refreshToken')).then(answer => {
                 if (!answer) {
-                    clearLocatDatas();
+                    clearLocaltDatas();
                     history.push('/');
                 }
             });
@@ -28,52 +32,20 @@ export default function Page() {
 
         const id= JSON.parse(localStorage.getItem('data') || "{}")?.id;
 
-        /**
-         * This will fetch the profile info from the backend using the two tokens.
-         * If the accessToken is expired, it requests for a new one using the refreshToken
-         * and redo the fetching again.
-         */
-        const getProfileInfo = () => {
-            fetch(BASE_API_URL + '/profile-info', {
-                method: 'POST',
-                headers: { 'Content-type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('accessToken') + ' ' + localStorage.getItem('refreshToken') },
-                body: JSON.stringify({
-                    id: id
-                })
-            }).then(response => response.json()).then(
-                data => {
-                    console.log(data);
-                    if (data.data) {
-                        setProfileData(data.data);
-                        setProfileLoading(false);
-                    } else if (data.error === "accessToken") {
-                        fetch(BASE_API_URL + '/refresh', {
-                            method: 'POST',
-                            headers: { 'Content-type': 'application/json' },
-                            body: JSON.stringify({
-                                refreshToken: localStorage.getItem('refreshToken')
-                            })
-                        }).then(response => response.json()).then(data => {
-                            console.log(data);
-                            if (data.success) {
-                                localStorage.setItem('refreshToken', data.refreshToken);
-                                localStorage.setItem('accessToken', data.accessToken);
-                                getProfileInfo();
-                            }
-                        });
-                    } else {
-                        // console.log("RefreshToken is not valid");
-                        // console.log(data);
-                        // history.push('/');
-                    }
-                }
-            ).catch(error => {
-                console.log("Can't fetch shit. Aborting.");
-                console.log(error);
-                history.push('/');
+        getProfileInfo(id).then(res=> {
+            setProfileData(res);
+            setProfileLoading(false);
+        }).catch((err: Error)=> {
+            console.log(err);
+            notifCtx.create({
+                type: "error",
+                title: "Can't fetch profile info",
+                message: err.message,
+                id: String(new Date().getMilliseconds()),
             });
-        }
-        getProfileInfo();
+            setProfileLoading(false);
+        });
+
     }, [isEditing]);
 
     useEffect(()=> {
@@ -94,37 +66,27 @@ export default function Page() {
             firstname: profileFormData.firstname,
             age: profileFormData.age
         };
-        const sendInfo= () => {
-            fetch(BASE_API_URL + '/update-info', {
-                method: 'POST',
-                headers: { 'Content-type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('accessToken') + ' ' + localStorage.getItem('refreshToken') },
-                body: JSON.stringify(reqBody)
-            }).then(response => response.json()).then(
-                data => {
-                    console.log(data);
-                    if (data.success) {
-                        console.log("Operation successful");
-                        setIsEditing(false);
-                    } else if (data.error === "accessToken") {
-                        fetch(BASE_API_URL + '/refresh', {
-                            method: 'POST',
-                            headers: { 'Content-type': 'application/json' },
-                            body: JSON.stringify({
-                                refreshToken: localStorage.getItem('refreshToken')
-                            })
-                        }).then(response => response.json()).then(data => {
-                            console.log(data);
-                            if (data.success) {
-                                localStorage.setItem('refreshToken', data.refreshToken);
-                                localStorage.setItem('accessToken', data.accessToken);
-                                sendInfo();
-                            }
-                        });
-                    }
-                }
-            );
-        };
-        sendInfo();
+        updateProfileInfo(reqBody).then(res=>{
+            if (res.success) {
+                console.log("Operation successful");
+                notifCtx.create({
+                    type: "success",
+                    title: "Success",
+                    message: "Profile info has been updated succesfully!",
+                    id: String(new Date().getMilliseconds()),
+                });
+                setIsEditing(false);
+            }
+            if (res.error) {
+                notifCtx.create({
+                    type: "error",
+                    title: "Can't update profile info",
+                    message: "An error has occured",
+                    id: String(new Date().getMilliseconds()),
+                });
+                console.log(res.error);
+            }
+        });
     };
 
     return<>
@@ -132,7 +94,7 @@ export default function Page() {
         <h1 className="text-xl text-center">Your profile</h1>
         {
             profileLoading ?
-            <>Loaging you profile info...</>
+            <>Loading you profile info...</>
             :
             !isEditing ?
             <>

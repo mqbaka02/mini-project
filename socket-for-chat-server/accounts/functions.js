@@ -39,6 +39,7 @@ function refreshToken (req, res) {
         }
         const newRefreshToken = jwt.sign({id: user.id, username: user.name, userrole: user.role}, JWT_KEY, {expiresIn: '7d'});
 
+        res.setHeader("Set-Cookie", [`accessToken=${newAccessToken}; Path=/; HttpOnly; Secure; SameSite=None`, `refreshToken=${newRefreshToken}; Path=/; HttpOnly; Secure; SameSite=None`]);
         return res.json({
             success: true,
             refreshToken: newRefreshToken,

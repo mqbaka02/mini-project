@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getUsersList, userListItem } from "../lib/users";
 import { socket } from "../socket/socket";
+import { useNotificationContext } from "../contexts/contexts";
 type user= {id: number, name: string};
 export default function Page() {
     const [users, setUsers]= useState<userListItem[]>([]);
@@ -34,6 +35,26 @@ export default function Page() {
         };
 
     }, []);
+
+    const notifCtx= useNotificationContext();
+    
+    useEffect(() => {
+        if (connected) {
+            notifCtx.create({
+                title: "Connected",
+                message: "You have been succesfully connected to server socket",
+                type: "success",
+                id: String(new Date().getUTCMilliseconds()),
+            });
+        } else {
+            notifCtx.create({
+                title: "Disconnected",
+                message: "You have been disconnected from server socket",
+                type: "error",
+                id: String(new Date().getUTCMilliseconds()),
+            });
+        }
+    }, [connected]);
     
     return <>
         <div>

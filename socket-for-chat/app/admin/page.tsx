@@ -1,8 +1,6 @@
 "use client";
 
-import { ChevronRightIcon, CogIcon, UsersIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import { ReactElement } from "react";
+import { CogIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { LinkWithIcon } from "../components/linkWIthIcon";
 
 export default function Page() {

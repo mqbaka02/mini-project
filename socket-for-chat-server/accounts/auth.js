@@ -78,10 +78,12 @@ const logout= (req, res)=> {
  * @returns {any}
  */
 const authenticateToken= (req, res, next) => {
+    // console.log(req.headers);
     if (req.headers['authorization']) {
         const accessToken= req.headers['authorization'].split(' ')[1];
         const refreshToken= req.headers['authorization'].split(' ')[2];
         if (!refreshToken) {
+            //This just means that only one token has been sent, it could be either one, that's not important
             return res.status(401).json({error: 'Access denied, one or more token is missing.'});
         }
         // next();
